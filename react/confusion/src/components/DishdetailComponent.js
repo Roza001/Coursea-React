@@ -10,7 +10,7 @@ class DishDetail extends Component {
                     <li >{mycomment.comment}</li>
                     <li>
                         --{mycomment.author}{", "}
-                        {mycomment.date}
+                        {new Intl.DateTimeFormat('en-US', {year: 'numeric', month:'short', day: '2-digit'}).format(new Date(Date.parse(mycomment.date)))}
                     </li>
                 </ul>
             ));
@@ -22,26 +22,44 @@ class DishDetail extends Component {
         }
     }
 
-    render(){
-        const {selectedDish} = this.props;
-        console.log('DishDetail Compenent render is invoked');
-        return (            
-            <div className="row">
-                <div className="col-12 col-md-5 m-1">
-                <Card>
-                    <CardImg top src={selectedDish.image} alt={selectedDish.name} />
-                    <CardBody>
-                    <CardTitle>{selectedDish.name}</CardTitle>
-                    <CardText>{selectedDish.description}</CardText>
-                    </CardBody>
-                </Card>
-                </div>
+    renderDish(dish){        
+        if(dish != null){
+            return (            
+                <div className="row">
                     <div className="col-12 col-md-5 m-1">
-                    <h4>Comments</h4>
-                    {this.renderComments(selectedDish.comments)}
+                    <Card>
+                        <CardImg top src={dish.image} alt={dish.name} />
+                        <CardBody>
+                        <CardTitle>{dish.name}</CardTitle>
+                        <CardText>{dish.description}</CardText>
+                        </CardBody>
+                    </Card>
+                    </div>
+                        <div className="col-12 col-md-5 m-1">
+                        <h4>Comments</h4>
+                        {this.renderComments(dish.comments)}
+                    </div>
                 </div>
+            );
+        }
+        else{
+            return(
+                <div>             
+                </div>
+            )
+        }
+    }
+
+    render(){
+        const {dish} = this.props;            
+        
+        console.log('DishDetail Compenent render is invoked');
+        return(
+            <div className="container">
+                {this.renderDish(dish)}
             </div>
         );
+        
     }
 
 }
